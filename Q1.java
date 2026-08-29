@@ -1,9 +1,28 @@
-public class Q1 {
-    public static void checkPinLength(String pin) {
-        if (pin.length() != 4) {
-            System.out.println("Invalid PIN must be exactly 4 digits.");
-        } else {
-            System.out.println("PIN length OK.");
+class Q1 {
+    String title;
+    String author;
+    int copiesAvailable;
+
+    public BookInventory(String title, String author, int copiesAvailable) {
+        this.title = title;
+        this.author = author;
+        this.copiesAvailable = copiesAvailable;
+    }
+
+    public void printEntry() {
+        System.out.println(title + " by " + author + " - " + copiesAvailable + " copies available");
+    }
+
+    public static void main(String[] args) {
+        BookInventory[] inventory = {
+            new BookInventory("Clean Code", "Robert C. Martin", 3),
+            new BookInventory("Effective Java", "Joshua Bloch", 5),
+            new BookInventory("Refactoring", "Martin Fowler", 0),
+            new BookInventory("Design Patterns", "GoF", 2)
+        };
+
+        for (BookInventory book : inventory) {
+            book.printEntry();
         }
     }
 }

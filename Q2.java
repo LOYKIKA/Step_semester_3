@@ -1,18 +1,43 @@
-public class Q2 {
-    public static String reverseEachWord(String sentence) {
-        String[] words = sentence.split(" ");
-        StringBuilder result = new StringBuilder();
+class Q2 {
+    private double basicSalary;
+    private double bonus;
 
-        for (int i = 0; i < words.length; i++) {
-            StringBuilder reversedWord = new StringBuilder();
-            for (int j = words[i].length() - 1; j >= 0; j--) {
-                reversedWord.append(words[i].charAt(j));
-            }
-            result.append(reversedWord);
-            if (i < words.length - 1) {
-                result.append(" ");
-            }
+    public PayrollAccount(double basicSalary) {
+        if (basicSalary < 0) {
+            System.out.println("Warning: Basic salary cannot be negative. Initialized to 0.");
+            this.basicSalary = 0;
+        } else {
+            this.basicSalary = basicSalary;
         }
-        return result.toString();
+        this.bonus = 0;
+    }
+
+    public void creditBonus(double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid bonus amount. Must be greater than 0.");
+        } else {
+            this.bonus += amount;
+            System.out.println("Bonus credited: Rs " + amount);
+        }
+    }
+
+    public void deductTax(double percent) {
+        if (percent < 0 || percent > 100) {
+            System.out.println("Invalid tax percentage.");
+        } else {
+            this.basicSalary -= (this.basicSalary * percent / 100);
+            System.out.println("Tax deducted: " + (int) percent + "%");
+        }
+    }
+
+    public double getNetSalary() {
+        return basicSalary + bonus;
+    }
+
+    public static void main(String[] args) {
+        PayrollAccount account = new PayrollAccount(50000);
+        account.creditBonus(5000);
+        account.deductTax(10);
+        System.out.println("Net salary: Rs " + account.getNetSalary());
     }
 }

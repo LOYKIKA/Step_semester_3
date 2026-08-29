@@ -1,11 +1,30 @@
-public class Q3 {
-    public static void parseInventoryRecord(String csvLine) {
-        String[] fields = csvLine.split(",");
-        if (fields.length != 3) {
-            System.out.println("Invalid Record");
-            return;
-        }
-        System.out.printf("Product: %s | SKU: %s | Qty: %s\n",
-                fields[0].trim(), fields[1].trim(), fields[2].trim());
+class Q3 {
+    String empId;
+    String empName;
+    double salary;
+    boolean isIntern;
+
+    public Employee(String empId, String empName, double salary) {
+        this.empId = empId;
+        this.empName = empName;
+        this.salary = salary;
+        this.isIntern = false;
+    }
+
+    public Employee(String empId, String empName) {
+        this(empId, empName, 0.0);
+        this.isIntern = true;
+    }
+
+    public void printProfile() {
+        System.out.println(empId + " | " + empName + " | Rs " + salary + " | Intern: " + isIntern);
+    }
+
+    public static void main(String[] args) {
+        Employee emp1 = new Employee("E-101", "Divya", 65000);
+        Employee emp2 = new Employee("E-102", "Arjun");
+
+        emp1.printProfile();
+        emp2.printProfile();
     }
 }
