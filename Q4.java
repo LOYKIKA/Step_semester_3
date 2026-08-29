@@ -1,30 +1,30 @@
-public class InventoryBalancer {
-    public static void analyzeInventory(int[] sectionA, int[] sectionB) {
-        int totalA = 0, totalB = 0;
-        int maxQty = Integer.MIN_VALUE;
-        String maxSection = "";
-        int maxIndex = -1;
+public class Q4 {
+    public static String normalizeCode(String raw) {
+        if (raw == null) return "";
+        String trimmed = raw.trim();
+        if (trimmed.length() < 3) return trimmed;
+        return trimmed.substring(0, 3).toUpperCase() + trimmed.substring(3);
+    }
 
-        for (int i = 0; i < sectionA.length; i++) {
-            totalA += sectionA[i];
-            if (sectionA[i] > maxQty) {
-                maxQty = sectionA[i];
-                maxSection = "Section A";
-                maxIndex = i + 1;
+    public static String validateAndFormat(String code) {
+        if (code.length() != 13) {
+            return "Invalid: code must be exactly 13 characters";
+        }
+        for (int i = 0; i < 3; i++) {
+            if (!Character.isLetter(code.charAt(i))) {
+                return "Invalid: publisher code must be 3 letters";
+            }
+        }
+        for (int i = 3; i < 13; i++) {
+            if (!Character.isDigit(code.charAt(i))) {
+                return "Invalid: body must contain only digits";
             }
         }
 
-        for (int i = 0; i < sectionB.length; i++) {
-            totalB += sectionB[i];
-            if (sectionB[i] > maxQty) {
-                maxQty = sectionB[i];
-                maxSection = "Section B";
-                maxIndex = i + 1;
-            }
-        }
-
-        String status = (totalA == totalB) ? "Balanced" : "Not Balanced";
-        System.out.printf("Section A Total: %d | Section B Total: %d | Status: %s | Highest Quantity: %d (%s, Item %d)\n",
-                totalA, totalB, status, maxQty, maxSection, maxIndex);
+        StringBuilder sb = new StringBuilder();
+        sb.append("[").append(code.substring(0, 3)).append("] ")
+          .append("YEAR: ").append(code.substring(3, 7))
+          .append(" | CATALOG: ").append(code.substring(7, 13));
+        return sb.toString();
     }
 }

@@ -1,19 +1,24 @@
-public class Q5 {
-    public static void classifyWordLengths(String review) {
-        String[] words = review.trim().split("\\s+");
-        int shortWords = 0, mediumWords = 0, longWords = 0;
+import java.util.*;
 
+public class Q5 {
+    public static void printFilteredWordFrequency(String feedback) {
+        Set<String> stopWords = new HashSet<>(Arrays.asList("the", "was", "and", "a", "is", "of", "in"));
+        
+        String cleaned = feedback.toLowerCase().replace(".", "").replace(",", "");
+        String[] words = cleaned.trim().split("\\s+");
+        
+        Map<String, Integer> freqMap = new HashMap<>();
         for (String word : words) {
-            int len = word.length();
-            if (len >= 1 && len <= 4) {
-                shortWords++;
-            } else if (len >= 5 && len <= 8) {
-                mediumWords++;
-            } else if (len >= 9) {
-                longWords++;
+            if (!word.isEmpty() && !stopWords.contains(word)) {
+                freqMap.put(word, freqMap.getOrDefault(word, 0) + 1);
             }
         }
 
-        System.out.printf("Short: %d | Medium: %d | Long: %d\n", shortWords, mediumWords, longWords);
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(freqMap.entrySet());
+        list.sort((a, b) -> b.getValue().compareTo(a.getValue()));
+
+        for (Map.Entry<String, Integer> entry : list) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
     }
 }

@@ -1,31 +1,11 @@
 public class Q3 {
-    public static void findLongestStreak(String signalLog) {
-        if (signalLog == null || signalLog.isEmpty()) return;
-
-        char maxColor = signalLog.charAt(0);
-        int maxStreak = 1;
-
-        char currentColor = signalLog.charAt(0);
-        int currentStreak = 1;
-
-        for (int i = 1; i < signalLog.length(); i++) {
-            if (signalLog.charAt(i) == currentColor) {
-                currentStreak++;
-            } else {
-                if (currentStreak > maxStreak) {
-                    maxStreak = currentStreak;
-                    maxColor = currentColor;
-                }
-                currentColor = signalLog.charAt(i);
-                currentStreak = 1;
-            }
+    public static void parseInventoryRecord(String csvLine) {
+        String[] fields = csvLine.split(",");
+        if (fields.length != 3) {
+            System.out.println("Invalid Record");
+            return;
         }
-
-        if (currentStreak > maxStreak) {
-            maxStreak = currentStreak;
-            maxColor = currentColor;
-        }
-
-        System.out.printf("Longest Streak: '%c' repeated %d times\n", maxColor, maxStreak);
+        System.out.printf("Product: %s | SKU: %s | Qty: %s\n",
+                fields[0].trim(), fields[1].trim(), fields[2].trim());
     }
 }
