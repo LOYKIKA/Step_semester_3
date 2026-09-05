@@ -1,21 +1,26 @@
-class Q4 {
+class MembershipCard {
+    static String libraryName;
+    static String validUntil;
     String studentName;
-    int seatNumber;
 
-    public HallTicket(String studentName, int seatNumber) {
-        this.studentName = studentName;
-        this.seatNumber = seatNumber;
+    static {
+        libraryName = "SRM Central Library";
+        validUntil = "May 2027";
+        System.out.println("Library info loaded");
     }
 
+    public MembershipCard(String studentName) {
+        this.studentName = studentName;
+    }
+}
+
+public class Q4 {
     public static void main(String[] args) {
-        HallTicket priya = new HallTicket("Priya", 0);
-        HallTicket copy = priya;
-        copy.seatNumber = 45;
+        String[] names = {"Ananya", "Rohan", "Priya", "Arjun", "Sneha"};
 
-        System.out.println("Priya's seatNumber (via first variable): " + priya.seatNumber);
-        System.out.println("copy == priya: " + (copy == priya));
-
-        HallTicket separate = new HallTicket("Priya", 45);
-        System.out.println("separate == priya: " + (separate == priya));
+        for (String name : names) {
+            new MembershipCard(name);
+            System.out.println("Membership card issued: " + name);
+        }
     }
 }
