@@ -1,28 +1,36 @@
-class Q1 {
-    String title;
-    String author;
-    int copiesAvailable;
+class Participant {
+    String name;
+    String teamName;
+    boolean registered;
 
-    public BookInventory(String title, String author, int copiesAvailable) {
-        this.title = title;
-        this.author = author;
-        this.copiesAvailable = copiesAvailable;
+    public Participant(String name, String teamName) {
+        this.name = name;
+        this.teamName = teamName;
+        this.registered = true;
     }
 
-    public void printEntry() {
-        System.out.println(title + " by " + author + " - " + copiesAvailable + " copies available");
+    public Participant(String name) {
+        this(name, "Unassigned");
     }
 
+    public void printStatus() {
+        System.out.println(name + " | " + teamName + " | Registered: " + registered);
+    }
+}
+
+public class Q1 {
     public static void main(String[] args) {
-        BookInventory[] inventory = {
-            new BookInventory("Clean Code", "Robert C. Martin", 3),
-            new BookInventory("Effective Java", "Joshua Bloch", 5),
-            new BookInventory("Refactoring", "Martin Fowler", 0),
-            new BookInventory("Design Patterns", "GoF", 2)
-        };
+        String[] names = {"Ravi", "Meera", "Karthik", "Divya"};
+        String[] teamNames = {"ByteBusters", "", "CodeCrafters", ""};
 
-        for (BookInventory book : inventory) {
-            book.printEntry();
+        for (int i = 0; i < names.length; i++) {
+            Participant p;
+            if (teamNames[i].isEmpty()) {
+                p = new Participant(names[i]);
+            } else {
+                p = new Participant(names[i], teamNames[i]);
+            }
+            p.printStatus();
         }
     }
 }
