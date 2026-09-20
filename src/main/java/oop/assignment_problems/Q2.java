@@ -1,26 +1,36 @@
 import java.util.Scanner;
 public class Q2 {
     public static void main(String[] args) {
-        Item[] items = new Item[4];
-        items[0] = new Item("Samosa", 15);
-        items[1] = new Item("Tea Powder", 40);
-        items[2] = new Item("Bread", 8);
-        items[3] = new Item("Biscuit Packs", 25);
-        
-        for (int i = 0; i < items.length; i++) {
-            items[i].restock(20);
-            System.out.println(items[i].itemName + " | Final Stock: " + items[i].stock);
+        Scanner sc = new Scanner(System.in);
+        String[][] attempts = {
+            {"public", "SUBCLASS_DIFFERENT_PACKAGE_PARENT_TYPE"},
+            {"protected", "SUBCLASS_DIFFERENT_PACKAGE_PARENT_TYPE"},
+            {"protected", "SUBCLASS_DIFFERENT_PACKAGE_OWN_TYPE"}
+        };
+        System.out.println(firstDeniedAttempt(attempts));
+    }
+    static String classifyAccess(String fieldModifier, String accessorContext) {
+        if (fieldModifier.equals("public")) return "ALLOWED";
+        if (fieldModifier.equals("private")) {
+            return accessorContext.equals("SAME_CLASS") ? "ALLOWED" : "DENIED";
         }
+        if (fieldModifier.equals("default")) {
+            return (accessorContext.equals("SAME_CLASS") || accessorContext.equals("SAME_PACKAGE")) ? "ALLOWED" : "DENIED";
+        }
+        if (fieldModifier.equals("protected")) {
+            if (accessorContext.equals("SAME_CLASS") || accessorContext.equals("SAME_PACKAGE") || accessorContext.equals("SUBCLASS_DIFFERENT_PACKAGE_OWN_TYPE")) {
+                return "ALLOWED";
+            }
+            return "DENIED";
+        }
+        return "DENIED";
     }
-}
-class Item {
-    String itemName;
-    int stock;
-    public Item(String itemName, int stock) {
-        this.itemName = itemName;
-        this.stock = stock;
-    }
-    public void restock(int stock) {
-        this.stock += stock;
+    static String firstDeniedAttempt(String[][] attempts) {
+        for (int i = 0; i < attempts.length; i++) {
+            if (classifyAccess(attempts[i][0], attempts[i][1]).equals("DENIED")) {
+                return attempts[i][0] + " via " + attempts[i][1] + " (attempt #" + (i + 1) + ")";
+            }
+        }
+        return "None Denied";
     }
 }

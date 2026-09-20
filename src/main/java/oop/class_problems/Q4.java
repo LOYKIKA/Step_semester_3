@@ -1,23 +1,34 @@
 import java.util.Scanner;
 public class Q4 {
     public static void main(String[] args) {
-        String[] names = {"Ravi", "Meera", "Karthik", "Divya", "Anitha"};
-        for (int i = 0; i < names.length; i++) {
-            SrmStudent s = new SrmStudent(names[i]);
-            System.out.println("Student record created: " + names[i]);
-        }
+        Scanner sc = new Scanner(System.in);
+        MovieBookingProfile p = new MovieBookingProfile("Rahul Dev");
+        System.out.println(p.getName());
     }
 }
-class SrmStudent {
-    static String collegeName;
-    static String academicYear;
-    String name;
-    static {
-        collegeName = "SRM";
-        academicYear = "2024";
-        System.out.println("College info loaded");
+class MovieBookingProfile {
+    private String name;
+    private boolean confirmed;
+    private String otp;
+    public MovieBookingProfile() {
     }
-    public SrmStudent(String name) {
+    public MovieBookingProfile(String name) {
+        this();
         this.name = name;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 }

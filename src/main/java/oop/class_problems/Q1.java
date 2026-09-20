@@ -1,28 +1,38 @@
 import java.util.Scanner;
 public class Q1 {
     public static void main(String[] args) {
-        String[] titles = {"Clean Code", "Untitled Draft", "1984", "Notes"};
-        String[] isbns = {"978-0132350884", "", "9780451524935", ""};
-        LibraryBook[] books = new LibraryBook[titles.length];
-        
-        for (int i = 0; i < titles.length; i++) {
-            if (isbns[i].equals("")) {
-                books[i] = new LibraryBook(titles[i]);
-            } else {
-                books[i] = new LibraryBook(titles[i], isbns[i]);
-            }
-            System.out.println(books[i].title + " | " + books[i].isbn + " | Catalogued: true");
+        Scanner sc = new Scanner(System.in);
+        System.out.println(classifyAccess("private", "SAME_CLASS"));
+    }
+    static String classifyAccess(String fieldModifier, String accessorContext) {
+        if (fieldModifier.equals("public")) return "ALLOWED";
+        if (fieldModifier.equals("private")) {
+            return accessorContext.equals("SAME_CLASS") ? "ALLOWED" : "DENIED";
         }
+        if (fieldModifier.equals("default")) {
+            return (accessorContext.equals("SAME_CLASS") || accessorContext.equals("SAME_PACKAGE")) ? "ALLOWED" : "DENIED";
+        }
+        if (fieldModifier.equals("protected")) {
+            return (accessorContext.equals("SAME_CLASS") || accessorContext.equals("SAME_PACKAGE")) ? "ALLOWED" : "DENIED";
+        }
+        return "DENIED";
+    }
+    static String summarizeBatch(String[][] attempts) {
+        int allowed = 0;
+        int denied = 0;
+        for (int i = 0; i < attempts.length; i++) {
+            if (classifyAccess(attempts[i][0], attempts[i][1]).equals("ALLOWED")) {
+                allowed++;
+            } else {
+                denied++;
+            }
+        }
+        return "Allowed: " + allowed + " | Denied: " + denied;
     }
 }
-class LibraryBook {
-    String title;
-    String isbn;
-    public LibraryBook(String title, String isbn) {
-        this.title = title;
-        this.isbn = isbn;
-    }
-    public LibraryBook(String title) {
-        this(title, "PENDING");
-    }
+class MovieTicket {
+    private int seatNumber;
+    String screenId;
+    protected double ticketPrice;
+    public String movieTitle;
 }

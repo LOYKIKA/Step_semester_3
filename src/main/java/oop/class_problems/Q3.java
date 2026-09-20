@@ -1,31 +1,36 @@
 import java.util.Scanner;
 public class Q3 {
     public static void main(String[] args) {
-        String[] regNos = {"RA001", "RA002", "RA003", "RA004"};
-        double[] totalFees = {200000, 150000, 180000, 220000};
-        int[] daysLate = {10, 0, -2, 5};
-        
-        for (int i = 0; i < regNos.length; i++) {
-            if (daysLate[i] <= 0) {
-                System.out.println(regNos[i] + " - On time, no late fee");
-            } else {
-                LateFeeAccount acc = new LateFeeAccount(regNos[i], totalFees[i]);
-                acc.printSummary(daysLate[i]);
-            }
-        }
+        Scanner sc = new Scanner(System.in);
+        CineScreen c = new CineScreen(2);
+        c.bookSeat(); c.bookSeat(); c.bookSeat();
+        System.out.println(c.getSeatsAvailable());
     }
 }
-class LateFeeAccount {
-    String regNo;
-    double totalFee;
-    public LateFeeAccount(String regNo, double totalFee) {
-        this.regNo = regNo;
-        this.totalFee = totalFee;
+class CineScreen {
+    private int seatsTotal;
+    private int seatsAvailable;
+    public CineScreen(int seatsTotal) {
+        if (seatsTotal <= 0) {
+            System.out.println("construction rejected");
+            this.seatsTotal = 1;
+            this.seatsAvailable = 1;
+        } else {
+            this.seatsTotal = seatsTotal;
+            this.seatsAvailable = seatsTotal;
+        }
     }
-    public final double calculateLateFee(int daysLate) {
-        return (daysLate / 100.0) * totalFee;
+    public void bookSeat() {
+        if (seatsAvailable > 0) {
+            seatsAvailable--;
+        }
     }
-    public final void printSummary(int daysLate) {
-        System.out.println(regNo + " | Total Fee: Rs " + totalFee + " | Late Fee: Rs " + calculateLateFee(daysLate));
+    public void cancelBooking() {
+        if (seatsAvailable < seatsTotal) {
+            seatsAvailable++;
+        }
+    }
+    public int getSeatsAvailable() {
+        return seatsAvailable;
     }
 }

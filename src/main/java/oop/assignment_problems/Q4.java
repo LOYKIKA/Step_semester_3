@@ -1,24 +1,41 @@
 import java.util.Scanner;
 public class Q4 {
     public static void main(String[] args) {
-        String[] names = {"Ananya", "Rohan", "Priya", "Arjun", "Sneha"};
-        MembershipCard[] cards = new MembershipCard[names.length];
-        for (int i = 0; i < names.length; i++) {
-            cards[i] = new MembershipCard(names[i]);
-            System.out.println("Membership card issued: " + names[i]);
-        }
+        Scanner sc = new Scanner(System.in);
+        LibraryMember m = new LibraryMember();
+        m.setMembershipId("LIB-8841");
+        m.setMembershipId("FAKE-0000");
+        System.out.println(m.getMembershipId());
     }
 }
-class MembershipCard {
-    static String libraryName;
-    static String validUntil;
-    String studentName;
-    static {
-        libraryName = "SRM Central Library";
-        validUntil = "May 2027";
-        System.out.println("Library info loaded");
+class LibraryMember {
+    private String membershipId;
+    private String name;
+    private boolean premiumMember;
+    private String securityAnswer;
+    public LibraryMember() {
     }
-    public MembershipCard(String studentName) {
-        this.studentName = studentName;
+    public String getMembershipId() {
+        return membershipId;
+    }
+    public void setMembershipId(String id) {
+        if (this.membershipId == null) {
+            this.membershipId = id;
+        }
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public boolean isPremiumMember() {
+        return premiumMember;
+    }
+    public void setPremiumMember(boolean premium) {
+        this.premiumMember = premium;
+    }
+    public void setSecurityAnswer(String answer) {
+        this.securityAnswer = answer;
     }
 }
