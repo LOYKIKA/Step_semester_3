@@ -1,21 +1,24 @@
 import java.util.Scanner;
 public class Q4 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        HallTicket priya = new HallTicket("Priya", 0);
-        HallTicket copy = priya;
-        copy.seatNumber = 45;
-        System.out.println("Priya's seatNumber (via first variable): " + priya.seatNumber);
-        System.out.println("copy == priya: " + (copy == priya));
-        HallTicket separate = new HallTicket("Priya", 45);
-        System.out.println("separate == priya: " + (separate == priya));
+        String[] names = {"Ananya", "Rohan", "Priya", "Arjun", "Sneha"};
+        MembershipCard[] cards = new MembershipCard[names.length];
+        for (int i = 0; i < names.length; i++) {
+            cards[i] = new MembershipCard(names[i]);
+            System.out.println("Membership card issued: " + names[i]);
+        }
     }
 }
-class HallTicket {
+class MembershipCard {
+    static String libraryName;
+    static String validUntil;
     String studentName;
-    int seatNumber;
-    HallTicket(String studentName, int seatNumber) {
+    static {
+        libraryName = "SRM Central Library";
+        validUntil = "May 2027";
+        System.out.println("Library info loaded");
+    }
+    public MembershipCard(String studentName) {
         this.studentName = studentName;
-        this.seatNumber = seatNumber;
     }
 }

@@ -1,27 +1,33 @@
 import java.util.Scanner;
 public class Q1 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        BookInventory[] books = new BookInventory[4];
-        books[0] = new BookInventory("Clean Code", "Robert C. Martin", 3);
-        books[1] = new BookInventory("Effective Java", "Joshua Bloch", 5);
-        books[2] = new BookInventory("Refactoring", "Martin Fowler", 0);
-        books[3] = new BookInventory("Design Patterns", "GoF", 2);
-        for (int i = 0; i < books.length; i++) {
-            books[i].printEntry();
+        String[] names = {"Ravi", "Meera", "Karthik", "Divya"};
+        String[] teamNames = {"ByteBusters", "", "CodeCrafters", ""};
+        Participant[] participants = new Participant[names.length];
+        
+        for (int i = 0; i < names.length; i++) {
+            if (teamNames[i].equals("")) {
+                participants[i] = new Participant(names[i]);
+            } else {
+                participants[i] = new Participant(names[i], teamNames[i]);
+            }
+            participants[i].printStatus();
         }
     }
 }
-class BookInventory {
-    String title;
-    String author;
-    int copiesAvailable;
-    BookInventory(String title, String author, int copiesAvailable) {
-        this.title = title;
-        this.author = author;
-        this.copiesAvailable = copiesAvailable;
+class Participant {
+    String name;
+    String teamName;
+    boolean registered;
+    public Participant(String name, String teamName) {
+        this.name = name;
+        this.teamName = teamName;
+        this.registered = true;
     }
-    void printEntry() {
-        System.out.println(title + " by " + author + " - " + copiesAvailable + " copies available");
+    public Participant(String name) {
+        this(name, "Unassigned");
+    }
+    public void printStatus() {
+        System.out.println(name + " | " + teamName + " | Registered: " + registered);
     }
 }

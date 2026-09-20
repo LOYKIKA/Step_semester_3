@@ -1,25 +1,41 @@
 import java.util.Scanner;
 public class Q5 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Employee e1 = new Employee("Alice", 50000);
-        Employee e2 = new Employee("Bob", 60000);
-        Employee e3 = new Employee("Charlie", 70000);
-        Employee.printCompanyInfo();
+        Payment[] payments = new Payment[5];
+        payments[0] = new CardPayment();
+        payments[1] = new Payment();
+        payments[2] = new CardPayment();
+        payments[3] = new Payment();
+        payments[4] = new CardPayment();
+        
+        double[] amounts = {100, 50, 200, 75, 120};
+        double totalCollected = 0;
+        
+        Q5 processor = new Q5();
+        for (int i = 0; i < payments.length; i++) {
+            totalCollected += processor.processTransaction(payments[i], amounts[i]);
+        }
+        System.out.println("Total Collected: Rs " + totalCollected);
+    }
+    public double processTransaction(Payment payment, double amount) {
+        if (payment instanceof CardPayment) {
+            CardPayment cp = (CardPayment) payment;
+            return cp.payWithProcessingFee(amount);
+        } else {
+            return payment.pay(amount);
+        }
     }
 }
-class Employee {
-    String empName;
-    double salary;
-    static String companyName = "Bright Horizon Technologies";
-    static int employeeCount = 0;
-    Employee(String empName, double salary) {
-        this.empName = empName;
-        this.salary = salary;
-        employeeCount++;
+class Payment {
+    public double pay(double amount) {
+        System.out.println("Paid (cash): Rs " + amount);
+        return amount;
     }
-    static void printCompanyInfo() {
-        System.out.println(companyName);
-        System.out.println("Employees on record: " + employeeCount);
+}
+class CardPayment extends Payment {
+    public double payWithProcessingFee(double amount) {
+        double total = amount + (amount * 0.02);
+        System.out.println("Charged (card, incl. fee): Rs " + total);
+        return total;
     }
 }

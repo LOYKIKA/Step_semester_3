@@ -1,21 +1,23 @@
 import java.util.Scanner;
 public class Q4 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        IdCard ravi = new IdCard("Ravi", 0);
-        IdCard duplicate = ravi;
-        duplicate.booksIssued = 3;
-        System.out.println("Ravi's booksIssued (via first variable): " + ravi.booksIssued);
-        System.out.println("duplicate == ravi: " + (duplicate == ravi));
-        IdCard separate = new IdCard("Ravi", 3);
-        System.out.println("separate == ravi: " + (separate == ravi));
+        String[] names = {"Ravi", "Meera", "Karthik", "Divya", "Anitha"};
+        for (int i = 0; i < names.length; i++) {
+            SrmStudent s = new SrmStudent(names[i]);
+            System.out.println("Student record created: " + names[i]);
+        }
     }
 }
-class IdCard {
+class SrmStudent {
+    static String collegeName;
+    static String academicYear;
     String name;
-    int booksIssued;
-    IdCard(String name, int booksIssued) {
+    static {
+        collegeName = "SRM";
+        academicYear = "2024";
+        System.out.println("College info loaded");
+    }
+    public SrmStudent(String name) {
         this.name = name;
-        this.booksIssued = booksIssued;
     }
 }

@@ -1,29 +1,31 @@
 import java.util.Scanner;
 public class Q3 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Employee e1 = new Employee("E-101", "Divya", 65000);
-        Employee e2 = new Employee("E-102", "Arjun");
-        e1.printProfile();
-        e2.printProfile();
+        String[] vehicleNos = {"TN09AB1234", "TN22CD5678", "TN09EF9012", "TN10GH3456"};
+        double[] ratePerMinute = {2, 2, 3, 2};
+        int[] overstayMinutes = {15, 0, -5, 8};
+        
+        for (int i = 0; i < vehicleNos.length; i++) {
+            ParkingTicket ticket = new ParkingTicket(vehicleNos[i], ratePerMinute[i]);
+            if (overstayMinutes[i] > 0) {
+                ticket.printReceipt(overstayMinutes[i]);
+            } else {
+                System.out.println(vehicleNos[i] + " - No fine, within allotted time");
+            }
+        }
     }
 }
-class Employee {
-    String empId;
-    String empName;
-    double salary;
-    boolean isIntern;
-    public Employee(String empId, String empName, double salary) {
-        this.empId = empId;
-        this.empName = empName;
-        this.salary = salary;
-        this.isIntern = false;
+class ParkingTicket {
+    String vehicleNo;
+    double ratePerMinute;
+    public ParkingTicket(String vehicleNo, double ratePerMinute) {
+        this.vehicleNo = vehicleNo;
+        this.ratePerMinute = ratePerMinute;
     }
-    public Employee(String empId, String empName) {
-        this(empId, empName, 0);
-        this.isIntern = true;
+    public final double calculateFine(int overstayMinutes) {
+        return overstayMinutes * ratePerMinute;
     }
-    void printProfile() {
-        System.out.println(empId + " | " + empName + " | Rs " + salary + " | Intern: " + isIntern);
+    public final void printReceipt(int overstayMinutes) {
+        System.out.println(vehicleNo + " - Fine: Rs " + calculateFine(overstayMinutes));
     }
 }

@@ -1,28 +1,31 @@
 import java.util.Scanner;
 public class Q3 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Course c1 = new Course("21CSC201J", "Data Structures", 4);
-        Course c2 = new Course("21CSC205L", "DSA Lab", 3, 1);
-        System.out.println(c1.code + " total credits: " + c1.totalCredits());
-        System.out.println(c2.code + " total credits: " + c2.totalCredits());
+        String[] regNos = {"RA001", "RA002", "RA003", "RA004"};
+        double[] totalFees = {200000, 150000, 180000, 220000};
+        int[] daysLate = {10, 0, -2, 5};
+        
+        for (int i = 0; i < regNos.length; i++) {
+            if (daysLate[i] <= 0) {
+                System.out.println(regNos[i] + " - On time, no late fee");
+            } else {
+                LateFeeAccount acc = new LateFeeAccount(regNos[i], totalFees[i]);
+                acc.printSummary(daysLate[i]);
+            }
+        }
     }
 }
-class Course {
-    String code;
-    String title;
-    int credits;
-    int labCredits;
-    public Course(String code, String title, int credits, int labCredits) {
-        this.code = code;
-        this.title = title;
-        this.credits = credits;
-        this.labCredits = labCredits;
+class LateFeeAccount {
+    String regNo;
+    double totalFee;
+    public LateFeeAccount(String regNo, double totalFee) {
+        this.regNo = regNo;
+        this.totalFee = totalFee;
     }
-    public Course(String code, String title, int credits) {
-        this(code, title, credits, 0);
+    public final double calculateLateFee(int daysLate) {
+        return (daysLate / 100.0) * totalFee;
     }
-    int totalCredits() {
-        return credits + labCredits;
+    public final void printSummary(int daysLate) {
+        System.out.println(regNo + " | Total Fee: Rs " + totalFee + " | Late Fee: Rs " + calculateLateFee(daysLate));
     }
 }

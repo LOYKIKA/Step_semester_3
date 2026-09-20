@@ -1,26 +1,28 @@
 import java.util.Scanner;
 public class Q1 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        PlacementRecord[] records = new PlacementRecord[3];
-        records[0] = new PlacementRecord("Ravi", "TCS", 4.5);
-        records[1] = new PlacementRecord("Anitha", "Zoho", 6.2);
-        records[2] = new PlacementRecord("Karthik", "Infosys", 4.0);
-        for (int i = 0; i < records.length; i++) {
-            records[i].printRecord();
+        String[] titles = {"Clean Code", "Untitled Draft", "1984", "Notes"};
+        String[] isbns = {"978-0132350884", "", "9780451524935", ""};
+        LibraryBook[] books = new LibraryBook[titles.length];
+        
+        for (int i = 0; i < titles.length; i++) {
+            if (isbns[i].equals("")) {
+                books[i] = new LibraryBook(titles[i]);
+            } else {
+                books[i] = new LibraryBook(titles[i], isbns[i]);
+            }
+            System.out.println(books[i].title + " | " + books[i].isbn + " | Catalogued: true");
         }
     }
 }
-class PlacementRecord {
-    String studentName;
-    String company;
-    double packageLpa;
-    PlacementRecord(String studentName, String company, double packageLpa) {
-        this.studentName = studentName;
-        this.company = company;
-        this.packageLpa = packageLpa;
+class LibraryBook {
+    String title;
+    String isbn;
+    public LibraryBook(String title, String isbn) {
+        this.title = title;
+        this.isbn = isbn;
     }
-    void printRecord() {
-        System.out.println(studentName + " -> " + company + " @ " + packageLpa + " LPA");
+    public LibraryBook(String title) {
+        this(title, "PENDING");
     }
 }
