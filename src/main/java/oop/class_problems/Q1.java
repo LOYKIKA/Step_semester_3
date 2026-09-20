@@ -1,38 +1,43 @@
 import java.util.Scanner;
 public class Q1 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println(classifyAccess("private", "SAME_CLASS"));
+        String[] ids = {"STU1", "LB1", "STU2", " ", "STU3"};
+        System.out.println(enrollBatch(ids, 3));
     }
-    static String classifyAccess(String fieldModifier, String accessorContext) {
-        if (fieldModifier.equals("public")) return "ALLOWED";
-        if (fieldModifier.equals("private")) {
-            return accessorContext.equals("SAME_CLASS") ? "ALLOWED" : "DENIED";
-        }
-        if (fieldModifier.equals("default")) {
-            return (accessorContext.equals("SAME_CLASS") || accessorContext.equals("SAME_PACKAGE")) ? "ALLOWED" : "DENIED";
-        }
-        if (fieldModifier.equals("protected")) {
-            return (accessorContext.equals("SAME_CLASS") || accessorContext.equals("SAME_PACKAGE")) ? "ALLOWED" : "DENIED";
-        }
-        return "DENIED";
-    }
-    static String summarizeBatch(String[][] attempts) {
-        int allowed = 0;
-        int denied = 0;
-        for (int i = 0; i < attempts.length; i++) {
-            if (classifyAccess(attempts[i][0], attempts[i][1]).equals("ALLOWED")) {
-                allowed++;
-            } else {
-                denied++;
+    static String enrollBatch(String[] memberIds, int borrowLimit) {
+        int enrolled = 0;
+        int rejected = 0;
+        for (String id : memberIds) {
+            try {
+                new LibraryMember(id, borrowLimit);
+                enrolled++;
+            } catch (IllegalArgumentException e) {
+                rejected++;
             }
         }
-        return "Allowed: " + allowed + " | Denied: " + denied;
+        return "Enrolled: " + enrolled + " | Rejected: " + rejected;
     }
 }
-class MovieTicket {
-    private int seatNumber;
-    String screenId;
-    protected double ticketPrice;
-    public String movieTitle;
+class LibraryMember {
+    String memberId;
+    int borrowLimit;
+    public LibraryMember(String memberId, int borrowLimit) {
+        if (memberId == null || memberId.trim().isEmpty() || memberId.length() < 4) {
+            throw new IllegalArgumentException("Invalid ID");
+        }
+        this.memberId = memberId;
+        this.borrowLimit = borrowLimit;
+    }
+    void borrowBook() {}
+    int getBooksBorrowed() { return 0; }
+}
+class StudentMember extends LibraryMember {
+    String course;
+    int booksBorrowed = 0;
+    public StudentMember(String memberId, int borrowLimit, String course) {
+        super(memberId, borrowLimit);
+        this.course = course;
+    }
+    void borrowBook() { booksBorrowed++; }
+    int getBooksBorrowed() { return booksBorrowed; }
 }

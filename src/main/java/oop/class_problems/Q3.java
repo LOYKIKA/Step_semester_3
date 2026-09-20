@@ -1,36 +1,41 @@
 import java.util.Scanner;
 public class Q3 {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        CineScreen c = new CineScreen(2);
-        c.bookSeat(); c.bookSeat(); c.bookSeat();
-        System.out.println(c.getSeatsAvailable());
+        StudentMember s = new StudentMember("STU5", 3, "CSE");
+        s.chargeFine(100);
+        System.out.println(s.getTotalFine());
     }
 }
-class CineScreen {
-    private int seatsTotal;
-    private int seatsAvailable;
-    public CineScreen(int seatsTotal) {
-        if (seatsTotal <= 0) {
-            System.out.println("construction rejected");
-            this.seatsTotal = 1;
-            this.seatsAvailable = 1;
-        } else {
-            this.seatsTotal = seatsTotal;
-            this.seatsAvailable = seatsTotal;
+class LibraryMember {
+    private int[] fineHistory = new int[10];
+    private int fineCount = 0;
+    protected void chargeFine(int amount) {
+        if (fineCount < 10) {
+            fineHistory[fineCount++] = amount;
         }
     }
-    public void bookSeat() {
-        if (seatsAvailable > 0) {
-            seatsAvailable--;
+    int[] getFineHistory() {
+        int[] copy = new int[fineCount];
+        for (int i = 0; i < fineCount; i++) {
+            copy[i] = fineHistory[i];
         }
+        return copy;
     }
-    public void cancelBooking() {
-        if (seatsAvailable < seatsTotal) {
-            seatsAvailable++;
+    int getTotalFine() {
+        int total = 0;
+        for (int i = 0; i < fineCount; i++) {
+            total += fineHistory[i];
         }
+        return total;
     }
-    public int getSeatsAvailable() {
-        return seatsAvailable;
+}
+class StudentMember extends LibraryMember {
+    String course;
+    public StudentMember(String memberId, int borrowLimit, String course) {
+        this.course = course;
+    }
+    @Override
+    protected void chargeFine(int amount) {
+        super.chargeFine(amount / 2);
     }
 }
