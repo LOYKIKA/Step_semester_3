@@ -1,72 +1,108 @@
-abstract class Drone {
-    public abstract String fly();
+import java.util.*;
+
+interface NotificationChannel {
+    void send(String student, String title);
 }
 
-interface Trackable {
-    String getLocation();
-}
-
-class DeliveryDrone extends Drone implements Trackable {
-    private String id;
-
-    public DeliveryDrone(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String fly() {
-        return id + " is flying";
-    }
-
-    @Override
-    public String getLocation() {
-        return id + " at Sector 4";
+class EmailChannel implements NotificationChannel {
+    public void send(String student, String title) {
+        System.out.println("[Email → " + student + "] " + title);
     }
 }
 
-class ScoutDrone extends Drone {
-    private String id;
-
-    public ScoutDrone(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String fly() {
-        return id + " is scouting";
+class SmsChannel implements NotificationChannel {
+    public void send(String student, String title) {
+        System.out.println("[SMS → " + student + "] " + title);
     }
 }
 
-class GroundRobot implements Trackable {
-    private String id;
+class AppChannel implements NotificationChannel {
+    public void send(String student, String title) {
+        System.out.println("[App → " + student + "] " + title);
+    }
+}
 
-    public GroundRobot(String id) {
-        this.id = id;
+class Student {
+    String name;
+    String department;
+    List<NotificationChannel> channels = new ArrayList<>();
+
+    Student(String name, String department) {
+        this.name = name;
+        this.department = department;
     }
 
-    @Override
-    public String getLocation() {
-        return id + " at Sector 4";
+    void addChannel(NotificationChannel channel) {
+        channels.add(channel);
+    }
+}
+
+class Notice {
+    String title;
+    Set<String> departments;
+
+    Notice(String title, Set<String> departments) {
+        this.title = title;
+        this.departments = departments;
+    }
+
+    boolean isValid() {
+        return title != null && !title.trim().isEmpty()
+                && departments != null && !departments.isEmpty();
+    }
+}
+
+class NoticeBoard {
+    List<Student> students = new ArrayList<>();
+
+    void addStudent(Student student) {
+        students.add(student);
+    }
+
+    void postNotice(Notice notice) {
+        if (!notice.isValid()) {
+            System.out.println(
+                    "Cannot post notice: At least one target department is required.");
+            return;
+        }
+
+        System.out.println("Notice '" + notice.title
+                + "' posted to " + String.join(", ", notice.departments) + ".");
+
+        for (Student student : students) {
+            if (notice.departments.contains(student.department)) {
+                for (NotificationChannel channel : student.channels) {
+                    channel.send(student.name, notice.title);
+                }
+            }
+        }
     }
 }
 
 public class Q5 {
-    static String getLocationIfTrackable(Object o) {
-        if (o instanceof Trackable) {
-            Trackable t = (Trackable) o;
-            return t.getLocation();
-        } else {
-            return "Tracking not available";
-        }
-    }
-
     public static void main(String[] args) {
-        DeliveryDrone d = new DeliveryDrone("DR-1");
-        ScoutDrone s = new ScoutDrone("SC-1");
-        GroundRobot g = new GroundRobot("GR-1");
+        NoticeBoard board = new NoticeBoard();
 
-        System.out.println(getLocationIfTrackable(d));
-        System.out.println(getLocationIfTrackable(s));
-        System.out.println(getLocationIfTrackable(g));
+        Student asha = new Student("Asha", "CSE");
+        asha.addChannel(new EmailChannel());
+        asha.addChannel(new AppChannel());
+
+        Student ravi = new Student("Ravi", "ECE");
+        ravi.addChannel(new SmsChannel());
+
+        board.addStudent(asha);
+        board.addStudent(ravi);
+
+        board.postNotice(new Notice(
+                "Lab Closed Tomorrow",
+                new HashSet<>(Arrays.asList("CSE"))));
+
+        board.postNotice(new Notice(
+                "Fee Deadline Extended",
+                new HashSet<>(Arrays.asList("CSE", "ECE"))));
+
+        board.postNotice(new Notice(
+                "Sports Day",
+                new HashSet<>()));
     }
 }

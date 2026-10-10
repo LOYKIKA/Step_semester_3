@@ -1,48 +1,49 @@
-
-interface Printable {
-    String printLabel();
+enum Status {
+    PENDING, APPROVED, REJECTED
 }
 
-class PackageBox implements Printable {
-    private String trackingId;
+class LeaveRequest {
+    String employee;
+    String dates;
+    Status status = Status.PENDING;
 
-    public PackageBox(String trackingId) {
-        this.trackingId = trackingId;
+    LeaveRequest(String employee, String dates) {
+        this.employee = employee;
+        this.dates = dates;
     }
 
-    @Override
-    public String printLabel() {
-        return "Package label: " + trackingId;
-    }
-}
+    void review(boolean approve) {
+        if (status != Status.PENDING) {
+            System.out.println("Request already reviewed");
+            return;
+        }
 
-class Invoice implements Printable {
-    private String invoiceNumber;
-
-    public Invoice(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
+        status = approve ? Status.APPROVED : Status.REJECTED;
+        System.out.println(employee + "'s leave " + status);
     }
 
-    @Override
-    public String printLabel() {
-        return "Invoice label: " + invoiceNumber;
+    void changeStatus(Status newStatus) {
+        if (status != Status.PENDING) {
+            System.out.println("Cannot change status from " + status);
+        } else {
+            status = newStatus;
+        }
     }
 }
 
 public class Q2 {
-    static void printAll(Printable[] items) {
-        for (Printable item : items) {
-            System.out.println(item.printLabel());
-        }
-    }
-
     public static void main(String[] args) {
-        PackageBox p = new PackageBox("TRK-88");
-        Invoice i = new Invoice("INV-42");
+        LeaveRequest r1 = new LeaveRequest("John", "Jan 1-5");
+        LeaveRequest r2 = new LeaveRequest("Jane", "Feb 10-11");
 
-        System.out.println(p.printLabel());
-        System.out.println(i.printLabel());
+        System.out.println("Leave request submitted for John");
+        System.out.println("Status: " + r1.status);
+        r1.review(true);
 
-        printAll(new Printable[]{p, i});
+        System.out.println("Leave request submitted for Jane");
+        System.out.println("Status: " + r2.status);
+        r2.review(false);
+
+        r1.changeStatus(Status.PENDING);
     }
 }

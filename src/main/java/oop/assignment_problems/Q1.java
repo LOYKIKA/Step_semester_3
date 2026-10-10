@@ -1,45 +1,67 @@
-interface Ringable {
-    String ring();
+abstract class WashType {
+    abstract int getDuration();
+    abstract double getCharge();
 }
 
-class AlarmClock implements Ringable {
-    private String time;
-
-    public AlarmClock(String time) {
-        this.time = time;
-    }
-
-    public String ring() {
-        return "Alarm ringing for " + time;
-    }
+class QuickWash extends WashType {
+    int getDuration() { return 30; }
+    double getCharge() { return 20; }
 }
 
-class Doorbell implements Ringable {
-    private String location;
+class NormalWash extends WashType {
+    int getDuration() { return 45; }
+    double getCharge() { return 30; }
+}
 
-    public Doorbell(String location) {
-        this.location = location;
+class HeavyWash extends WashType {
+    int getDuration() { return 60; }
+    double getCharge() { return 45; }
+}
+
+class WashingMachine {
+    String id;
+    private boolean busy = false;
+
+    WashingMachine(String id) {
+        this.id = id;
     }
 
-    public String ring() {
-        return "Doorbell ringing at " + location;
+    boolean isFree() {
+        return !busy;
+    }
+
+    boolean startWash(String student, WashType wash) {
+        if (busy) {
+            System.out.println("Machine " + id + " is currently busy.");
+            return false;
+        }
+
+        busy = true;
+        System.out.println(wash.getClass().getSimpleName()
+                + " started on " + id + " for " + student
+                + " (" + wash.getDuration() + " min).");
+        System.out.printf("Charge: ₹%.2f%n", wash.getCharge());
+        return true;
+    }
+
+    void completeWash() {
+        if (busy) {
+            busy = false;
+            System.out.println(id + " cycle completed. " + id + " is now free.");
+        }
     }
 }
 
 public class Q1 {
-    static void ringAll(Ringable[] devices) {
-        for (Ringable device : devices) {
-            System.out.println(device.ring());
-        }
-    }
-
     public static void main(String[] args) {
-        AlarmClock a = new AlarmClock("7:00 AM");
-        Doorbell d = new Doorbell("Front Door");
+        WashingMachine m1 = new WashingMachine("M1");
+        WashingMachine m2 = new WashingMachine("M2");
 
-        System.out.println(a.ring());
-        System.out.println(d.ring());
+        m1.startWash("Asha", new QuickWash());
+        m1.startWash("Ravi", new HeavyWash());
+        m2.startWash("Ravi", new HeavyWash());
 
-        ringAll(new Ringable[]{a, d});
+        m1.completeWash();
+        m1.startWash("Neha", new NormalWash());
     }
 }

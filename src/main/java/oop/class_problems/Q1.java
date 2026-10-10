@@ -1,51 +1,60 @@
+import java.util.*;
 
-abstract class Toy {
-    private static int counter = 1000;
-    private final String toyId;
-    protected String name;
+abstract class Vehicle {
+    String name;
+    boolean available = true;
 
-    public Toy(String name) {
+    Vehicle(String name) {
         this.name = name;
-        toyId = "TOY-" + (++counter);
     }
 
-    public abstract String makeSound();
-
-    public String getToyId() {
-        return toyId;
-    }
+    abstract double calculateCharge(int days);
 }
 
-class ToyCar extends Toy {
-    public ToyCar(String name) {
+class Sedan extends Vehicle {
+    Sedan(String name) {
         super(name);
     }
 
-    @Override
-    public String makeSound() {
-        return name + ": Vroom vroom!";
+    double calculateCharge(int days) {
+        return days * 50;
     }
 }
 
-class ToyRobot extends Toy {
-    public ToyRobot(String name) {
+class SUV extends Vehicle {
+    SUV(String name) {
         super(name);
     }
 
-    @Override
-    public String makeSound() {
-        return name + ": Beep boop!";
+    double calculateCharge(int days) {
+        return days * 80;
     }
 }
 
 public class Q1 {
     public static void main(String[] args) {
-        ToyCar c = new ToyCar("Speedster");
-        ToyRobot r = new ToyRobot("Bolt");
+        Vehicle sedan = new Sedan("Sedan A");
+        Vehicle suv = new SUV("SUV B");
 
-        System.out.println(c.makeSound());
-        System.out.println(r.makeSound());
-        System.out.println(c.getToyId());
-        System.out.println(r.getToyId());
+        rentVehicle(sedan, "Customer 1", 3);
+        rentVehicle(sedan, "Customer 2", 2);
+        returnVehicle(sedan, "Customer 1");
+        rentVehicle(suv, "Customer 3", 5);
+    }
+
+    static void rentVehicle(Vehicle v, String customer, int days) {
+        if (v.available) {
+            v.available = false;
+            System.out.println(v.name + " rented by " + customer);
+            System.out.println("Rental charge: $" +
+                    v.calculateCharge(days));
+        } else {
+            System.out.println(v.name + " is unavailable");
+        }
+    }
+
+    static void returnVehicle(Vehicle v, String customer) {
+        v.available = true;
+        System.out.println(v.name + " returned by " + customer);
     }
 }
