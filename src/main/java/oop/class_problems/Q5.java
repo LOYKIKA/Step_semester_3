@@ -1,56 +1,30 @@
-
-abstract class DeliveryNote {
-    public abstract String confirmDelivery();
-
-    public String confirmDelivery(String signature) {
-        return confirmDelivery() + ", signed by " + signature;
-    }
-}
-
-class ParcelNote extends DeliveryNote {
-    private String trackingId;
-
-    public ParcelNote(String trackingId) {
-        this.trackingId = trackingId;
-    }
-
-    @Override
-    public String confirmDelivery() {
-        return "Parcel " + trackingId + " delivered";
-    }
-}
-
-class LetterNote extends DeliveryNote {
-    private String trackingId;
-
-    public LetterNote(String trackingId) {
-        this.trackingId = trackingId;
-    }
-
-    @Override
-    public String confirmDelivery() {
-        return "Letter " + trackingId + " delivered";
-    }
-}
-
 public class Q5 {
-    static void logAll(DeliveryNote[] notes) {
-        for (DeliveryNote note : notes) {
-            System.out.println(note.confirmDelivery());
+    static int maxContainerArea(int[] heights) {
+        int left = 0;
+        int right = heights.length - 1;
+        int maxArea = 0;
+
+        while (left < right) {
+            int height = Math.min(heights[left], heights[right]);
+            int width = right - left;
+            int area = height * width;
+
+            maxArea = Math.max(maxArea, area);
+
+            if (heights[left] < heights[right]) {
+                left++;
+            } else {
+                right--;
+            }
         }
+
+        return maxArea;
     }
 
     public static void main(String[] args) {
-        ParcelNote p = new ParcelNote("TRK-1");
+        int[] heights = {1, 8, 6, 2, 5, 4, 8, 3, 7};
 
-        System.out.println(p.confirmDelivery());
-        System.out.println(p.confirmDelivery("J. Smith"));
-
-        DeliveryNote ref = p;
-
-        logAll(new DeliveryNote[]{
-            ref,
-            new LetterNote("TRK-2")
-        });
+        System.out.println("Maximum area: "
+                + maxContainerArea(heights));
     }
 }
