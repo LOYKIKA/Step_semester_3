@@ -1,54 +1,72 @@
-import java.util.Scanner;
+abstract class Drone {
+    public abstract String fly();
+}
+
+interface Trackable {
+    String getLocation();
+}
+
+class DeliveryDrone extends Drone implements Trackable {
+    private String id;
+
+    public DeliveryDrone(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String fly() {
+        return id + " is flying";
+    }
+
+    @Override
+    public String getLocation() {
+        return id + " at Sector 4";
+    }
+}
+
+class ScoutDrone extends Drone {
+    private String id;
+
+    public ScoutDrone(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String fly() {
+        return id + " is scouting";
+    }
+}
+
+class GroundRobot implements Trackable {
+    private String id;
+
+    public GroundRobot(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getLocation() {
+        return id + " at Sector 4";
+    }
+}
+
 public class Q5 {
-    public static void main(String[] args) {
-        GymMember m1 = new GymMember(1000);
-        System.out.println(m1.membershipNumber);
-        System.out.println(GymMember.getMembersEnrolled());
-    }
-    static String processWeeklyCheckIn(GymMember[] members) {
-        int processed = 0, nullSkipped = 0, group = 0, individual = 0;
-        for (GymMember m : members) {
-            if (m == null) {
-                nullSkipped++;
-            } else {
-                processed++;
-                if (m instanceof GroupClassMember) group++;
-                else individual++;
-            }
+    static String getLocationIfTrackable(Object o) {
+        if (o instanceof Trackable) {
+            Trackable t = (Trackable) o;
+            return t.getLocation();
+        } else {
+            return "Tracking not available";
         }
-        return processed + " processed | " + nullSkipped + " null skipped | " + group + " group | " + individual + " individual";
     }
-}
-class GymMember {
-    static int enrolled = 0;
-    final String membershipNumber;
-    int feesPaid = 0;
-    public GymMember(int monthlyFee) {
-        enrolled++;
-        this.membershipNumber = "GYM-200" + enrolled;
-    }
-    void payFee(int amount) {
-        feesPaid += amount;
-    }
-    void payFee(int amount, String mode) {
-        payFee(amount);
-    }
-    int getFeesPaid() {
-        return feesPaid;
-    }
-    static boolean isValidReferralCode(String code) {
-        if (code == null || code.length() != 4) return false;
-        if (code.charAt(0) != 'G') return false;
-        if (!Character.isDigit(code.charAt(1)) || !Character.isDigit(code.charAt(2))) return false;
-        if (!Character.isUpperCase(code.charAt(3))) return false;
-        return true;
-    }
-    static int getMembersEnrolled() {
-        return enrolled;
-    }
-}
-class GroupClassMember extends GymMember {
-    public GroupClassMember(int monthlyFee, String className) {
-        super(monthlyFee);
+
+    public static void main(String[] args) {
+        DeliveryDrone d = new DeliveryDrone("DR-1");
+        ScoutDrone s = new ScoutDrone("SC-1");
+        GroundRobot g = new GroundRobot("GR-1");
+
+        System.out.println(getLocationIfTrackable(d));
+        System.out.println(getLocationIfTrackable(s));
+        System.out.println(getLocationIfTrackable(g));
     }
 }

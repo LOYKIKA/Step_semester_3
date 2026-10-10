@@ -1,47 +1,45 @@
-import java.util.Scanner;
+interface Ringable {
+    String ring();
+}
+
+class AlarmClock implements Ringable {
+    private String time;
+
+    public AlarmClock(String time) {
+        this.time = time;
+    }
+
+    public String ring() {
+        return "Alarm ringing for " + time;
+    }
+}
+
+class Doorbell implements Ringable {
+    private String location;
+
+    public Doorbell(String location) {
+        this.location = location;
+    }
+
+    public String ring() {
+        return "Doorbell ringing at " + location;
+    }
+}
+
 public class Q1 {
+    static void ringAll(Ringable[] devices) {
+        for (Ringable device : devices) {
+            System.out.println(device.ring());
+        }
+    }
+
     public static void main(String[] args) {
-        String[] ids = {"MEM1", "GM1", "MEM2", " ", "MEM3"};
-        System.out.println(signUpBatch(ids, 1000));
-    }
-    static String signUpBatch(String[] memberIds, int monthlyFee) {
-        int signedUp = 0;
-        int rejected = 0;
-        for (String id : memberIds) {
-            try {
-                new GymMember(id, monthlyFee);
-                signedUp++;
-            } catch (IllegalArgumentException e) {
-                rejected++;
-            }
-        }
-        return "Signed Up: " + signedUp + " | Rejected: " + rejected;
-    }
-}
-class GymMember {
-    String memberId;
-    int monthlyFee;
-    public GymMember(String memberId, int monthlyFee) {
-        if (memberId == null || memberId.trim().isEmpty() || memberId.length() < 4) {
-            throw new IllegalArgumentException("Invalid member ID");
-        }
-        this.memberId = memberId;
-        this.monthlyFee = monthlyFee;
-    }
-    void attendSession() {}
-    int getSessionsAttended() { return 0; }
-}
-class PremiumMember extends GymMember {
-    String trainerName;
-    int sessionsAttended = 0;
-    public PremiumMember(String memberId, int monthlyFee, String trainerName) {
-        super(memberId, monthlyFee);
-        this.trainerName = trainerName;
-    }
-    void attendSession() {
-        sessionsAttended++;
-    }
-    int getSessionsAttended() {
-        return sessionsAttended;
+        AlarmClock a = new AlarmClock("7:00 AM");
+        Doorbell d = new Doorbell("Front Door");
+
+        System.out.println(a.ring());
+        System.out.println(d.ring());
+
+        ringAll(new Ringable[]{a, d});
     }
 }

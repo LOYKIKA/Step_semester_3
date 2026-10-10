@@ -1,38 +1,49 @@
-import java.util.Scanner;
+
+abstract class KitchenTool {
+    private int speedLevel = 1;
+
+    public abstract String prepare();
+
+    public int getSpeedLevel() {
+        return speedLevel;
+    }
+
+    public void setSpeedLevel(int speedLevel) {
+        if (speedLevel >= 1 && speedLevel <= 5) {
+            this.speedLevel = speedLevel;
+        } else {
+            System.out.println("Invalid speed level!");
+        }
+    }
+}
+
+interface Washable {
+    String clean();
+}
+
+class Blender extends KitchenTool implements Washable {
+    @Override
+    public String prepare() {
+        return "Blending at speed " + getSpeedLevel();
+    }
+
+    @Override
+    public String clean() {
+        return "Blender rinsed and dried";
+    }
+}
+
 public class Q4 {
     public static void main(String[] args) {
-        LibraryMember[] members = {
-            new LibraryMember("LB5", 3),
-            new StudentMember("STU6", 3, "ECE")
-        };
-        System.out.println(batchPrint(members));
-    }
-    static String batchPrint(LibraryMember[] members) {
-        StringBuilder sb = new StringBuilder();
-        for (LibraryMember m : members) {
-            sb.append(m.displayInfo());
-            if (m instanceof StudentMember) {
-                StudentMember sm = (StudentMember) m;
-                sb.append(" [Course via downcast: ").append(sm.course).append("]");
-            }
-            sb.append(" | ");
-        }
-        return sb.toString();
-    }
-}
-class LibraryMember {
-    public LibraryMember(String memberId, int borrowLimit) {}
-    String displayInfo() {
-        return "General | Books: 0";
-    }
-}
-class StudentMember extends LibraryMember {
-    String course;
-    public StudentMember(String memberId, int borrowLimit, String course) {
-        super(memberId, borrowLimit);
-        this.course = course;
-    }
-    String displayInfo() {
-        return "Student | Course: " + course + " | Books: 0";
+        Blender b = new Blender();
+
+        b.setSpeedLevel(3);
+        System.out.println(b.getSpeedLevel());
+
+        b.setSpeedLevel(9);
+        System.out.println(b.getSpeedLevel());
+
+        System.out.println(b.prepare());
+        System.out.println(b.clean());
     }
 }
